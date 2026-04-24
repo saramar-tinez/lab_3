@@ -325,5 +325,123 @@ void ejercicio_encriptacion() {
         cout << "Error: " << e.what() << endl;
     }
 }
+// 5.4 INTEGRACION
+
+void ejercicio_integracion() {
+    try {
+        cout << "5.4 Integracion" << endl;
+
+        string nombre_archivo;
+        cout << "Nombre del archivo de entrada: ";
+        cin >> nombre_archivo;
+
+        ifstream archivo_entrada(nombre_archivo);
+        if (!archivo_entrada.is_open())
+            throw runtime_error("No se pudo abrir el archivo.");
+
+        string texto = "", linea;
+        while (getline(archivo_entrada, linea))
+            texto += linea;
+        archivo_entrada.close();
+
+        if (texto.empty()) throw runtime_error("El archivo esta vacio.");
+        cout << "Texto leido: " << texto << endl;
+
+        int metodo;
+        cout << "Metodo de compresion (1=RLE, 2=LZ78): ";
+        cin >> metodo;
+        if (metodo != 1 && metodo != 2) throw runtime_error("Metodo invalido.");
+
+        int n, K_int;
+        cout << "Valor de rotacion n (1-7): ";
+        cin >> n;
+        if (n < 1 || n > 7) throw runtime_error("n invalido.");
+        cout << "Clave K (0-255): ";
+        cin >> K_int;
+        if (K_int < 0 || K_int > 255) throw runtime_error("K invalida.");
+        unsigned char K = (unsigned char)K_int;
+
+        string texto_final = "";
+
+        if (metodo == 1) {
+            string comprimido = comprimir_RLE(texto);
+            cout << "Comprimido: " << comprimido << endl;
+
+            int len = comprimido.length();
+            unsigned char* enc = new unsigned char[len];
+            for (int i = 0; i < len; i++)
+                enc[i] = encriptar_byte((unsigned char)comprimido[i], n, K);
+
+            string comp_recuperado = "";
+            for (int i = 0; i < len; i++)
+                comp_recuperado += (char)desencriptar_byte(enc[i], n, K);
+
+            texto_final = descomprimir_RLE(comp_recuperado);
+            delete[] enc;
+
+        } else {
+            const char* cstr = texto.c_str();
+            int nt = texto.length();
+            EntradaDiccionario* dicc = nullptr;
+            int tam_dicc = 0, num_pares = 0;
+            Par* pares = comprimir_LZ78(cstr, nt, dicc, tam_dicc, num_pares);
+
+            unsigned char* enc_idx = new unsigned char[num_pares];
+            unsigned char* enc_chr = new unsigned char[num_pares];
+            for (int i = 0; i < num_pares; i++) {
+                enc_idx[i] = encriptar_byte((unsigned char)pares[i].indice, n, K);
+                enc_chr[i] = encriptar_byte((unsigned char)pares[i].caracter, n, K);
+            }
+
+            Par* pares_dec = new Par[num_pares];
+            for (int i = 0; i < num_pares; i++) {
+                pares_dec[i].indice   = (int) desencriptar_byte(enc_idx[i], n, K);
+                pares_dec[i].caracter = (char)desencriptar_byte(enc_chr[i], n, K);
+            }
+
+            int len_res = 0;
+            char* resultado = descomprimir_LZ78(pares_dec, num_pares, len_res);
+            texto_final = string(resultado);
+
+            delete[] enc_idx;
+            delete[] enc_chr;
+            delete[] pares_dec;
+            delete[] pares;
+            delete[] dicc;
+            delete[] resultado;
+        }
+
+        ofstream archivo_salida("salida.txt");
+        if (!archivo_salida.is_open())
+            throw runtime_error("No se pudo crear salida.txt");
+        archivo_salida << texto_final;
+        archivo_salida.close();
+
+        cout << "Texto original: " << texto << endl;
+        cout << "Texto final:    " << texto_final << endl;
+
+        if (texto == texto_final)
+            cout << "Verificacion exitosa." << endl;
+        else
+            cout << "Error: los textos no coinciden." << endl;
+
+        cout << "Resultado guardado en salida.txt" << endl;
+
+    } catch (exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+
+
+// MAIN
+int main() {
+
+    ejercicio_RLE();
+    // ejercicio_LZ78();
+    // ejercicio_encriptacion();
+    // ejercicio_integracion();
+
+    return 0;
+}
 
 
