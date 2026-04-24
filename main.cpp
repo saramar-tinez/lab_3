@@ -245,5 +245,85 @@ void ejercicio_LZ78() {
         cout << "Error: " << e.what() << endl;
     }
 }
+// 5.3 ENCRIPTACION
+
+unsigned char rotar_izquierda(unsigned char byte, int n) {
+    n = n % 8;
+    return (byte << n) | (byte >> (8 - n));
+}
+
+unsigned char rotar_derecha(unsigned char byte, int n) {
+    n = n % 8;
+    return (byte >> n) | (byte << (8 - n));
+}
+
+unsigned char encriptar_byte(unsigned char byte, int n, unsigned char K) {
+    return rotar_izquierda(byte, n) ^ K;
+}
+
+unsigned char desencriptar_byte(unsigned char byte_enc, int n, unsigned char K) {
+    return rotar_derecha(byte_enc ^ K, n);
+}
+
+void mostrar_bits(unsigned char byte) {
+    for (int i = 7; i >= 0; i--)
+        cout << ((byte >> i) & 1);
+}
+
+void ejercicio_encriptacion() {
+    try {
+        cout << "5.3 Encriptacion" << endl;
+
+        string texto;
+        int n, K_int;
+
+        cout << "Ingresa el texto: ";
+        cin >> texto;
+        if (texto.empty()) throw runtime_error("El texto no puede estar vacio.");
+
+        cout << "Valor de rotacion n (1-7): ";
+        cin >> n;
+        if (n < 1 || n > 7) throw runtime_error("n debe estar entre 1 y 7.");
+
+        cout << "Clave K (0-255): ";
+        cin >> K_int;
+        if (K_int < 0 || K_int > 255) throw runtime_error("K debe estar entre 0 y 255.");
+
+        unsigned char K = (unsigned char)K_int;
+        int len = texto.length();
+
+        unsigned char* encriptado    = new unsigned char[len];
+        unsigned char* desencriptado = new unsigned char[len + 1];
+
+        cout << "\nBits por caracter:" << endl;
+        for (int i = 0; i < len; i++) {
+            unsigned char original = (unsigned char)texto[i];
+            encriptado[i] = encriptar_byte(original, n, K);
+            cout << "'" << texto[i] << "': ";
+            mostrar_bits(original);
+            cout << " -> ";
+            mostrar_bits(encriptado[i]);
+            cout << endl;
+        }
+
+        for (int i = 0; i < len; i++)
+            desencriptado[i] = desencriptar_byte(encriptado[i], n, K);
+        desencriptado[len] = '\0';
+
+        cout << "\nTexto original:      " << texto << endl;
+        cout << "Texto desencriptado: " << (char*)desencriptado << endl;
+
+        if (texto == string((char*)desencriptado))
+            cout << "Verificacion exitosa." << endl;
+        else
+            cout << "Error: el texto no coincide." << endl;
+
+        delete[] encriptado;
+        delete[] desencriptado;
+
+    } catch (exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
 
 
