@@ -1,0 +1,9 @@
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/lab_3.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/install.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/lab_3_autogen_timestamp_deps.dir
+C:/INFORMATICA_2/Laboratorio3/lab_3/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/CMakeFiles/lab_3_autogen.dir
